@@ -1,4 +1,0 @@
-
-Hello from Python
-Hello Python	from Subhadip
-Bye

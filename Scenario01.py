@@ -49,7 +49,7 @@ class Product:
         print(f"Removed {amount} units from '{self.name}'. Current quantity: {self.quantity}")
 
     def display_details(self):
-        print(f"{self.name} | ₹{self.price} | Qty: {self.quantity} | Category: {self.category}")
+        print(f"Product: {self.name} | INR {self.price} | Qty: {self.quantity} | Category: {self.category}")
 
     @classmethod
     def get_total_products(cls):
@@ -62,6 +62,9 @@ def categorize_by_category(products):
 
 def filter_out_of_stock(products):
     return [p for p in products if p.quantity > 0]
+
+def filter_in_stock(products):
+    return [p for p in products if p.quantity <= 0]
 
 
 if __name__ == "__main__":
@@ -79,6 +82,10 @@ if __name__ == "__main__":
 
     print("\nIn-stock:")
     for p in filter_out_of_stock([p1, p2, p3, p4]):
+        p.display_details()
+
+    print("\nOut of stock:")
+    for p in filter_in_stock([p1, p2, p3, p4]):
         p.display_details()
 
     print("\nCategorized Products:")

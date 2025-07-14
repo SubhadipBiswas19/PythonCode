@@ -54,8 +54,6 @@ class Login:
             print(f"Registration failed for user '{username}'.")
             print(ke)
 
-        # except (ValueError, KeyError) as e:
-        #     print(f"Registration failed for user '{username}'")
 
     def login(self, username):
         attempt = 0

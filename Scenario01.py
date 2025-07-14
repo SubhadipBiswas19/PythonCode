@@ -18,73 +18,74 @@ class Product:
     total_products = 0
 
     def __init__(self, name, price, quantity, category):
-        if not name or not category:
-            raise ValueError("Name or category cannot be empty")
+        if not name:
+            raise ValueError("Product name cannot be empty.")
         if price <= 0:
-            raise ValueError("Price cannot be negative or zero")
-        if quantity <= 0:
-            raise ValueError("Quantity cannot be negative")
-
+            raise ValueError("Price must be greater than 0.")
+        if quantity < 0:
+            raise ValueError("Quantity cannot be negative.")
+        if not category:
+            raise ValueError("Category cannot be empty.")
 
         self.name = name
         self.price = price
         self.quantity = quantity
         self.category = category
+
         Product.total_products += 1
 
-    def update_quantity(self, amount):
-        if self.quantity + amount <= 0:
-            raise ValueError("Insufficient stock to remove.")
+    def add_stock(self, amount):
+        if amount < 0:
+            raise ValueError("Cannot add negative stock.")
         self.quantity += amount
+        print(f"Added {amount} units to '{self.name}'. Current quantity: {self.quantity}")
+
+    def remove_stock(self, amount):
+        if amount < 0:
+            raise ValueError("Cannot remove negative stock.")
+        if self.quantity - amount < 0:
+            raise ValueError("Insufficient stock to remove.")
+        self.quantity -= amount
+        print(f"Removed {amount} units from '{self.name}'. Current quantity: {self.quantity}")
 
     def display_details(self):
-        print(f"Product Name: {self.name} | Price: ₹{self.price} | Quantity: {self.quantity} | Category: {self.category}")
+        print(f"{self.name} | ₹{self.price} | Qty: {self.quantity} | Category: {self.category}")
 
-        @classmethod
+    @classmethod
+    def get_total_products(cls):
+        return cls.total_products
 
-        def get_total_products(cls):
-            return cls.total_products
 
-    def categorize_products(products):
-        for product in products:
-            return {category:[p for p in products if p.category == category and p.quantity > 0] for category in set (p.category for p in products)}
+def categorize_by_category(products):
+    return {category: [p for p in products if p.category == category] for category in set(p.category for p in products)}
 
-    def main(self):
 
-        try:
-            p1 = Product("Apple", 10, 100, "Fruit")
-            p2 = Product("Milk", 28, 50, "Dairy")
-            p3 = Product("Banana", 15, 0, "Fruit")
+def filter_out_of_stock(products):
+    return [p for p in products if p.quantity > 0]
 
-        except ValueError as e:
-            print("Error while creating products:", e)
-            return
-
-        products = [p1,p2,p3]
-
-        try:
-            p1.update_quantity(10)
-            p2.update_quantity(20)
-        except ValueError as e:
-            print("Error while updating quantity:", e)
-
-            print("\nAll product Details:")
-            for p in products:
-                p.display_details()
-
-            available_products = [p for p in products if p.quantity > 0]
-
-            categorized = self.categorize_products(available_products)
-
-            print("\nCategorized Products (non-zero quantity):")
-            for category, items in categorized.items():
-                print(f"\tCategory: {category}")
-                for item in items:
-                    item.display_details()
-
-            print(f"Total Products: {Product.get_total_products()}")
 
 if __name__ == "__main__":
-    p = Product("Apple", 10, 100, "Fruit")
-    print(p.display_details())
-    print(p.main())
+
+    p1 = Product("Milk", 40.0, 100, "Dairy")
+    p2 = Product("Curd", 30.0, 0, "Dairy")
+    p3 = Product("Apple", 80.0, 25, "Fruits")
+    p4 = Product("Orange", 60.0, 0, "Fruits")
+
+    p1.remove_stock(10)
+    p3.add_stock(15)
+
+    for p in [p1, p2, p3, p4]:
+        p.display_details()
+
+    print("\nIn-stock:")
+    for p in filter_out_of_stock([p1, p2, p3, p4]):
+        p.display_details()
+
+    print("\nCategorized Products:")
+    categorized = categorize_by_category([p1, p2, p3, p4])
+    for category, items in categorized.items():
+        print(f"Category: {category}")
+        for item in items:
+            print(f"  - {item.name}")
+
+    print(f"\nTotal products created: {Product.get_total_products()}")

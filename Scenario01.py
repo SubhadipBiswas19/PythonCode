@@ -4,8 +4,7 @@ Tasks:
 Define a Product class with appropriate instance variables and an __init__ constructor.
 Create methods to update quantity (add or remove stock) and display product details.
 Maintain a class-level variable to track the total number of products created.
-Create a function to accept a list of products and return a dictionary categorizing products
-by their category using dict comprehension.
+Create a function to accept a list of products and return a dictionary categorizing products by their category using dict comprehension.
 Handle exceptions for invalid stock update operations (e.g., negative quantity).
 Use list comprehension to filter out products with zero quantity.
 Preconditions:
@@ -14,15 +13,6 @@ Price: float > 0
 Quantity: int ≥ 0
 Category: non-empty string
 Quantity update: can add/remove only if resulting quantity ≥ 0
-Sample Input:
- Create products:
-Product("Apple", 0.5, 100, "Fruit")
-Product("Milk", 1.2, 50, "Dairy")
-Product("Banana", 0.3, 0, "Fruit")
-Update quantity:
-Add 20 to Apple
-Remove 10 from Milk
-Categorize products by category and filter out zero quantity.
 """
 class Product:
     total_products = 0
